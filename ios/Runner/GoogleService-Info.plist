@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1043997898181-sbfuddq8ma56ru87e8k9o541hkbejvbv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1043997898181-sbfuddq8ma56ru87e8k9o541hkbejvbv</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1043997898181-g37bfa2kbqshjgks0jr016lno6ej51f5.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBlONK2-wuwQFLOg_lCTXHVp6CJhLTBtYk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1043997898181</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.pillminder.pillMinder</string>
+	<key>PROJECT_ID</key>
+	<string>pillminder22</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pillminder22.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1043997898181:ios:80659335e0ef800d5b07ac</string>
+</dict>
+</plist>
