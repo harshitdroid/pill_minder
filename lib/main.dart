@@ -166,7 +166,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 25,
                 child: ElevatedButton(onPressed: () {
                   FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text)
-                      .then((value){
+                      .then((value) {
+                    // Disable persistence on web platforms
+                    //await FirebaseAuth.instance.setPersistence(Persistence.NONE);
                     ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       duration: const Duration(seconds: 1), // default 4s
@@ -227,12 +229,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
             )
 
-
           ],
         ),
       ),
 
-       // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        },
+        backgroundColor: Colors.blue.shade200,
+        child: const Icon(Icons.add),
+      ),
+
+
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
