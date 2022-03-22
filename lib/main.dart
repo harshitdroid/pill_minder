@@ -4,10 +4,14 @@ import 'package:pill_minder/Sign%20up%20Page.dart';
 import 'package:pill_minder/homePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 //import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+
+  );
   runApp(const MyApp());
 }
 
@@ -56,6 +60,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
   int _counter = 0;
   bool isChecked = false;
   void _incrementCounter() {
@@ -115,15 +121,20 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             width: 350,
             child: TextField(
+              controller: emailController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Username',
+                labelText: 'Email',
               ),
             ),
           ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               width: 350,
               child: TextField(
+                controller: passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -154,14 +165,34 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                 flex: 25,
                 child: ElevatedButton(onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
+                  FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text)
+                      .then((value){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: const Duration(seconds: 1), // default 4s
+                      content: const Text('Logged In'),
+                    ),
+                    );
+                  print("Login Successfully");
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                  }).catchError((error){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: const Duration(seconds: 1), // default 4s
+                        content: const Text('Invalid Email/Password'),
+                      ),
+                    );
+
+                  print("Failed to login");
+                  print(error.toString());
+                      });
               },
-                child: Text(
-                    'Login'
-                ),
+                child: Text('Login'),
+
               ),
               ),
               Spacer(flex: 3),
