@@ -233,16 +233,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        },
-        backgroundColor: Colors.blue.shade200,
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => HomePage()),
+      //     );
+      //   },
+      //   backgroundColor: Colors.blue.shade200,
+      //   child: const Icon(Icons.add),
+      // ),
 
 
       // This trailing comma makes auto-formatting nicer for build methods.
