@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pill_minder/addMed.dart';
 import 'package:pill_minder/main.dart';
 import 'package:pill_minder/profilePage.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -69,6 +70,8 @@ class _HomePageState extends State<HomePage> {
 
     floatingActionButton: FloatingActionButton(
     onPressed: () {
+      Navigator.push(context,
+      MaterialPageRoute(builder: (context)=> addMed()));
     // Add your onPressed code here!
     },
     backgroundColor: Colors.blue.shade200,
