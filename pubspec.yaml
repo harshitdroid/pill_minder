@@ -39,6 +39,10 @@ dependencies:
   flutter_pw_validator: ^1.4.2
   table_calendar: ^3.0.4
   firebase_database: ^9.0.12
+  material_design_icons_flutter: ^5.0.6595
+  flutter_datetime_picker:
+    git:
+      url: https://github.com/Realank/flutter_datetime_picker.git
 
 
 dev_dependencies:

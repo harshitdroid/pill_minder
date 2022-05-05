@@ -93,17 +93,20 @@ class _SignUpState extends State<SignUp> {
                 'Name' : usernameController.text,
                 'email' : emailController.text,
               };
-              FirebaseDatabase.instance.ref().child("users/" + userID.toString())
-                  .set(userProfile)
-                  .then((value) => {
-
-              }).catchError((error) {
-
+              FirebaseFirestore.instance.collection(userID!).doc("info").set(
+                  {
+                    "Name" : usernameController.text,
+                    "email" : emailController.text,
+                  }
+              ).then((value){
+                print("Successfully added user to firestore database.");
+              }).catchError((error)
+              {
+                print("Failed to add user to firestore database.");
+                print(error);
               });
             });
-
           },
-
         ),
 
         FlutterPwValidator(
