@@ -113,13 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Container(
+          Flexible(child:Container(
             width: 350,
             height: 200,
-            child: Image(
-                  image: NetworkImage('https://i.ibb.co/pJfR7yw/Pill-Tracker-Logo.png'),
-            ),
-          ),
+            child: Image.asset('assets/images/Pill_Tracker_Logo.png'),
+          ) ,),
           Container(
             width: 350,
             child: TextField(
@@ -238,16 +236,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
 
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        },
-        backgroundColor: Colors.blue.shade200,
-        child: const Icon(Icons.add),
-      ),
+
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => HomePage()),
+      //     );
+      //   },
+      //   backgroundColor: Colors.blue.shade200,
+      //   child: const Icon(Icons.add),
+      // ),
 
     );
 

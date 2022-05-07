@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pill_minder/addMed.dart';
 import 'package:pill_minder/main.dart';
 import 'package:pill_minder/profilePage.dart';
+import 'package:pill_minder/userInfo.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final String userID = userInfo().getID();
   @override
 
   Widget build(BuildContext context) {
@@ -55,19 +57,39 @@ class _HomePageState extends State<HomePage> {
                   await FirebaseAuth.instance.signOut();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/', (Route<dynamic> route) => false);
-
-
                 },
               ),
             ],
           ),
         ),
-        body: TableCalendar(
-          firstDay: DateTime.utc(2010, 10, 16),
-          lastDay: DateTime.utc(2030, 3, 14),
-          focusedDay: DateTime.now(),
-        ),
+        body: Container(
+          child: Column(
+            children: [
+              Container(
+                child : TableCalendar(
+                  firstDay: DateTime.utc(2010, 10, 16),
+                  lastDay: DateTime.utc(2030, 3, 14),
+                  focusedDay: DateTime.now(),
+                ),
+              ),
+              // ListView(),
+              // ElevatedButton(onPressed: (){
+              // FirebaseFirestore.instance.collection(userID).get()
+              //     .then((querySnapShot){
+              //       print("successful");
+              //       print(querySnapShot);
+              //       querySnapShot.docs.forEach((element) {
+              //         print(element.data());
+              //       });
+              // }).catchError((error){
+              //   print("Failed");
+              // }
+              // );
+              // }, child: Text("get"))
+            ],
+          ),
 
+        ),
 
     floatingActionButton: FloatingActionButton(
     onPressed: () {

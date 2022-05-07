@@ -1,5 +1,7 @@
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
+
+
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
@@ -51,11 +53,12 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.pillminder.pill_minder"
-        minSdkVersion 19
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
+
 
     signingConfigs {
         release {
@@ -66,11 +69,15 @@ android {
         }
     }
     buildTypes {
-        release {
-            signingConfig signingConfigs.release
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
         }
+
     }
 }
+
 
 flutter {
     source '../..'
@@ -78,4 +85,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.material:material:1.7.0-alpha01'
+
+
 }

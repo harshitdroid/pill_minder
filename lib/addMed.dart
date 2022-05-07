@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pill_minder/main.dart';
@@ -33,6 +34,7 @@ class _addMedState extends State<addMed> {
   int minInt = 0;
   int secInt = 0;
   var splitted;
+  String bottType = "Bottle";
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +117,7 @@ class _addMedState extends State<addMed> {
                decoration:  InputDecoration(
                  border:  OutlineInputBorder(),
 
-                 labelText: 'Number of Pills to take at a time',
+                 labelText: 'Dosage',
 
                ),
                keyboardType: TextInputType.number,
@@ -127,6 +129,42 @@ class _addMedState extends State<addMed> {
 
 
            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                    "Type :      ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),),
+                Container(
+                  child: DropdownButton<String>(
+                    value: bottType,
+                    icon: const Icon(Icons.arrow_downward),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        bottType = newValue!;
+                      });
+                    },
+                    items: <String>['Bottle', 'Tablet', 'Pill', 'Syringe']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+
+              ],
+            ),
+
            const SizedBox(
              height: 20,
            ),
@@ -221,6 +259,21 @@ class _addMedState extends State<addMed> {
                       "sec" : secInt,
                       "time" : '${_time}'
                   }
+                ).then((value) {
+                  print("Successfully added to firebase");
+                }).catchError((error) {
+                  print("Failed to add to firebase");
+                });
+                FirebaseDatabase.instance.ref().child(userID + "/" + medNameController.text).set(
+                {
+                  "medName" : medNameController.text,
+                  "pills" : medQuantityController.text,
+                  "hour" : hourInt,
+                  "min" : minInt,
+                  "sec" : secInt,
+                  "time" : '${_time}',
+                  "Type" : bottType
+                }
                 ).then((value) {
                   print("Successfully added to firebase");
                 }).catchError((error) {
