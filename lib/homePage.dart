@@ -9,6 +9,8 @@ import 'package:pill_minder/userInfo.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 
 class HomePage extends StatefulWidget {
@@ -21,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final String userID = userInfo().getID();
+  var updateController = TextEditingController();
   int _selectedIndex = 0;
   var medList = [];
   _HomePageState(){
@@ -193,7 +196,39 @@ class _HomePageState extends State<HomePage> {
                               Container(
                                 width: 100,
                                 child: TextButton(
-                                  onPressed: (){},
+                                  onPressed: (){
+                                      // Alert(
+                                      //   context: context,
+                                      //   title: "Edit Medication Name",
+                                      //   content: Column(
+                                      //     children: [
+                                      //       TextField(
+                                      //         controller: updateController,
+                                      //         decoration:  InputDecoration(
+                                      //           border:  OutlineInputBorder(),
+                                      //           labelText: 'Name',
+                                      //         ),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      //   buttons: [
+                                      //     DialogButton(
+                                      //       child: Text("OK",
+                                      //       style: TextStyle(
+                                      //         color: Colors.white
+                                      //       ),
+                                      //       ),
+                                      //       onPressed: (){
+                                      //         FirebaseDatabase.instance.ref().child(userID).set({
+                                      //           "/"+"${medList[index]['medName']}" : updateController.text,
+                                      //           "${medList[index]['medName']}/medName" : updateController.text,
+                                      //         }
+                                      //         );
+                                      //       },
+                                      //     )
+                                      //   ],
+                                      // ).show();
+                                  },
                                   child: Text('${medList[index]['medName']}',
                                     textAlign: TextAlign.left,),
                                 ),
