@@ -69,11 +69,11 @@ android {
         }
     }
     buildTypes {
-        buildTypes {
+
             release {
                 signingConfig signingConfigs.release
             }
-        }
+
 
     }
 }
