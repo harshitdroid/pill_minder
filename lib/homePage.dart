@@ -10,7 +10,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 
 
 class HomePage extends StatefulWidget {
@@ -20,12 +21,13 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-
 class _HomePageState extends State<HomePage> {
-  final String userID = userInfo().getID();
+  final String userID = FirebaseAuth.instance.currentUser!.uid;
   var updateController = TextEditingController();
   int _selectedIndex = 0;
+
   var medList = [];
+  String bottType = "Bottle";
   _HomePageState(){
     refreshList();
     FirebaseDatabase.instance.ref().child(userID).onChildChanged.listen((event) {
@@ -60,7 +62,10 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
   void refreshList() {
-    FirebaseDatabase.instance.ref().child(userID).get()
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+
+    FirebaseDatabase.instance.ref().child(FirebaseAuth.instance.currentUser!.uid).get()
         .then((datasnapshot) {
       print("Successfully loaded data");
       print(datasnapshot.key);
@@ -197,37 +202,45 @@ class _HomePageState extends State<HomePage> {
                                 width: 100,
                                 child: TextButton(
                                   onPressed: (){
-                                      // Alert(
-                                      //   context: context,
-                                      //   title: "Edit Medication Name",
-                                      //   content: Column(
-                                      //     children: [
-                                      //       TextField(
-                                      //         controller: updateController,
-                                      //         decoration:  InputDecoration(
-                                      //           border:  OutlineInputBorder(),
-                                      //           labelText: 'Name',
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      //   buttons: [
-                                      //     DialogButton(
-                                      //       child: Text("OK",
-                                      //       style: TextStyle(
-                                      //         color: Colors.white
-                                      //       ),
-                                      //       ),
-                                      //       onPressed: (){
-                                      //         FirebaseDatabase.instance.ref().child(userID).set({
-                                      //           "/"+"${medList[index]['medName']}" : updateController.text,
-                                      //           "${medList[index]['medName']}/medName" : updateController.text,
-                                      //         }
-                                      //         );
-                                      //       },
-                                      //     )
-                                      //   ],
-                                      // ).show();
+                                      Alert(
+                                        context: context,
+                                        title: "Edit Medication Name",
+                                        content: Column(
+                                          children: [
+                                            TextField(
+                                              controller: updateController,
+                                              decoration:  InputDecoration(
+                                                border:  OutlineInputBorder(),
+                                                labelText: 'Name',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        buttons: [
+                                          DialogButton(
+                                            child: Text("OK",
+                                            style: TextStyle(
+                                              color: Colors.white
+                                            ),
+                                            ),
+                                            onPressed: (){
+                                              FirebaseDatabase.instance.ref().child(userID+ "/" + '${medList[index]['medName']}').remove();
+                                              FirebaseDatabase.instance.ref().child(userID + "/" + updateController.text).set({
+                                                //"/"+"${medList[index]['medName']}" : updateController.text,
+                                                "medName" : updateController.text,
+                                                "pills" : '${medList[index]['pills']}',
+                                                "hour" : '${medList[index]['hour']}',
+                                                "min" : '${medList[index]['min']}',
+                                                "sec" : '${medList[index]['sec']}',
+                                                "time" : '${medList[index]['time']}',
+                                                "Type" : '${medList[index]['Type']}',
+                                                //'${medList[index]['medName']}' : updateController.text,
+                                              }
+                                              );
+                                            },
+                                          )
+                                        ],
+                                      ).show();
                                   },
                                   child: Text('${medList[index]['medName']}',
                                     textAlign: TextAlign.left,),
@@ -236,7 +249,47 @@ class _HomePageState extends State<HomePage> {
                               Container(
                                 width: 40,
                                 child: TextButton(
-                                  onPressed: (){},
+                                  onPressed: (){
+                                    Alert(
+                                      context: context,
+                                      title: "Edit Dosage",
+                                      content: Column(
+                                        children: [
+                                          TextField(
+                                            controller: updateController,
+                                            decoration:  InputDecoration(
+                                              border:  OutlineInputBorder(),
+                                              labelText: 'Dosage',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      buttons: [
+                                        DialogButton(
+                                          child: Text("OK",
+                                            style: TextStyle(
+                                                color: Colors.white
+                                            ),
+                                          ),
+                                          onPressed: (){
+                                            FirebaseDatabase.instance.ref().child(userID+ "/" + '${medList[index]['medName']}').remove();
+                                            FirebaseDatabase.instance.ref().child(userID + "/" + '${medList[index]['medName']}').set({
+                                              //"/"+"${medList[index]['medName']}" : updateController.text,
+                                              "medName" :'${medList[index]['medName']}',
+                                              "pills" : updateController.text,
+                                              "hour" : '${medList[index]['hour']}',
+                                              "min" : '${medList[index]['min']}',
+                                              "sec" : '${medList[index]['sec']}',
+                                              "time" : '${medList[index]['time']}',
+                                              "Type" : '${medList[index]['Type']}',
+                                              //'${medList[index]['medName']}' : updateController.text,
+                                            }
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    ).show();
+                                  },
                                   style: TextButton.styleFrom(backgroundColor: Colors.white.withOpacity(0.4)),
                                   child: Text('${medList[index]['pills']}'),
                                 ),
@@ -244,7 +297,64 @@ class _HomePageState extends State<HomePage> {
                               Container(
                                 width: 70,
                                 child: TextButton(
-                                  onPressed: (){},
+                                  onPressed: (){
+                                    Alert(
+                                      context: context,
+                                      title: "Edit Dosage",
+                                      content: Column(
+                                        children: [
+                                          Container(
+                                            child: DropdownButton<String>(
+                                              value: bottType,
+                                              icon: const Icon(Icons.arrow_downward),
+                                              elevation: 16,
+                                              style: const TextStyle(color: Colors.black),
+                                              underline: Container(
+                                                height: 2,
+                                                color: Colors.deepPurpleAccent,
+                                              ),
+                                              onChanged: (String? newValue) {
+                                                setState(() {
+                                                  updateController.text = newValue!;
+                                                });
+                                              },
+                                              items: <String>['Bottle', 'Tablet', 'Capsule', 'Syringe','Inhaler']
+                                                  .map<DropdownMenuItem<String>>((String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      buttons: [
+                                        DialogButton(
+                                          child: Text("OK",
+                                            style: TextStyle(
+                                                color: Colors.white
+                                            ),
+                                          ),
+                                          onPressed: (){
+                                            FirebaseDatabase.instance.ref().child(userID+ "/" + '${medList[index]['medName']}').remove();
+                                            FirebaseDatabase.instance.ref().child(userID + "/" + '${medList[index]['medName']}').set({
+                                              //"/"+"${medList[index]['medName']}" : updateController.text,
+                                              "medName" :'${medList[index]['medName']}',
+                                              "pills" : '${medList[index]['pills']}',
+                                              "hour" : '${medList[index]['hour']}',
+                                              "min" : '${medList[index]['min']}',
+                                              "sec" : '${medList[index]['sec']}',
+                                              "time" : '${medList[index]['time']}',
+                                              "Type" : updateController.text,
+                                              //'${medList[index]['medName']}' : updateController.text,
+                                            }
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    ).show();
+                                  },
                                   child: Text('${medList[index]['Type']}'),
                                 ),
                               ),
@@ -256,9 +366,6 @@ class _HomePageState extends State<HomePage> {
                                   child: Text('${medList[index]['hour']}' + ':' + '${medList[index]['min']}'),
                                 ),
                               ),
-
-
-
                             ],
                           ),
                         );
@@ -266,7 +373,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-
         ),
 
     floatingActionButton: FloatingActionButton(

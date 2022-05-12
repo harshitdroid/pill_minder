@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 import 'package:pill_minder/homePage.dart';
 import 'package:pill_minder/main.dart';
 import 'package:pill_minder/profilePage.dart';
@@ -37,6 +38,7 @@ class _addMedState extends State<addMed> {
   var splitted;
   String bottType = "Bottle";
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,11 +50,11 @@ class _addMedState extends State<addMed> {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Text('Username'),
+              child: Text('userName'),
             ),
             ListTile(
               title: const Text('Profile Page'),
@@ -153,7 +155,7 @@ class _addMedState extends State<addMed> {
                         bottType = newValue!;
                       });
                     },
-                    items: <String>['Bottle', 'Tablet', 'Capsule', 'Syringe']
+                    items: <String>['Bottle', 'Tablet', 'Capsule', 'Syringe','Inhaler']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -265,7 +267,7 @@ class _addMedState extends State<addMed> {
                 }).catchError((error) {
                   print("Failed to add to firebase");
                 });
-                FirebaseDatabase.instance.ref().child(userID + "/" + medNameController.text).set(
+                FirebaseDatabase.instance.ref().child(FirebaseAuth.instance.currentUser!.uid + "/" + medNameController.text).set(
                 {
                   "medName" : medNameController.text,
                   "pills" : medQuantityController.text,
@@ -287,7 +289,9 @@ class _addMedState extends State<addMed> {
               ),
             ),
             ),
-            Row(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
               ElevatedButton(
                 onPressed: () {
                 Navigator.push(
