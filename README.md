@@ -1,6 +1,8 @@
 # pill_minder
 
-A new Flutter project.
+App beta now available on the Play Store.
+https://play.google.com/store/apps/details?id=com.pillminder.pill_minder
+
 
 ## Getting Started
 
